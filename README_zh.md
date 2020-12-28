@@ -20,7 +20,7 @@
 
     也可以编辑～/.bashrc 或者~/.zshrc设置环境变量。
 
-5. 编辑 `config/default.json` 文件，新增如下内容
+5. 重命名 `config/default-example.json` 文件为`config/default.json`，参考如下格式修改
    ```
    {
         "test":{

@@ -19,7 +19,7 @@ var collection_name = service_config.collection_name
 
 //run update
 update().catch(err => {
-    console.log("run failed")
+    console.error("run failed," + err)
 })
 
 //get swagger json
@@ -85,7 +85,7 @@ async function update() {
         }
         var saved = await collection.getCollectionDetail(id)
         var merged = json_merger.mergeObjects([body, saved])
-        handleIdMerge(merged)    
+        handleIdMerge(merged)
         collection.updateCollection(id, merged)
     })
 }

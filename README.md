@@ -20,7 +20,7 @@ This tools can update postman collection from swagger json, to avoid create ever
 
     you can also save it to you `~/.zhsrc` or `~/.bashrc` file
     
-5. Edit `config/default.json` file
+5. Rename `config/default-example.json` file to `config/default.json` and edit like bellow
    ```
    {       
         "test":{
