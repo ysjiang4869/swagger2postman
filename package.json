@@ -14,7 +14,7 @@
   "author": "jiangyuesong",
   "license": "MIT",
   "dependencies": {
-    "axios": "^0.21.0",
+    "axios": "^0.21.1",
     "commander": "^6.2.0",
     "config": "^3.3.3",
     "json-merger": "^1.1.5",

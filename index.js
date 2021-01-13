@@ -1,7 +1,9 @@
 #!/usr/bin/env node
 const stp = require('swagger2-to-postmanv2')
 const collection = require('./lib/collection')
-const config = require('config')
+process.env.SUPPRESS_NO_CONFIG_WARNING = 'y';
+var config_modle = require('config')
+config=config_modle.util.loadFileConfigs(__dirname + '/config/')
 const fetch = require('./lib/fetch')
 const fs = require('fs')
 const json_merger = require('json-merger')
