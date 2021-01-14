@@ -4,7 +4,7 @@
   "description": "swagger to postman helper",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node index.js -s test"
   },
   "keywords": [
     "swagger",
@@ -17,7 +17,6 @@
     "axios": "^0.21.1",
     "commander": "^6.2.0",
     "config": "^3.3.3",
-    "json-merger": "^1.1.5",
     "swagger2-to-postmanv2": "^2.0.0"
   },
   "bin": {

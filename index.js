@@ -1,12 +1,11 @@
 #!/usr/bin/env node
-const stp = require('swagger2-to-postmanv2')
+const converter = require('swagger2-to-postmanv2')
 const collection = require('./lib/collection')
 process.env.SUPPRESS_NO_CONFIG_WARNING = 'y';
-var config_modle = require('config')
-config=config_modle.util.loadFileConfigs(__dirname + '/config/')
+var configModule = require('config')
+config = configModule.util.loadFileConfigs(__dirname + '/config/')
 const fetch = require('./lib/fetch')
-const fs = require('fs')
-const json_merger = require('json-merger')
+const merger=require('./lib/merger')
 
 const program = require('commander')
 program.version('1.0.0')
@@ -15,9 +14,9 @@ program.version('1.0.0')
     .parse(process.argv)
 
 
-var service_config = config[program.service]
-var url = service_config.url
-var collection_name = service_config.collection_name
+var serviceConfig = config[program.service]
+var url = serviceConfig.url
+var collectionName = serviceConfig.collection_name
 
 //run update
 update().catch(err => {
@@ -34,60 +33,50 @@ function getSwaggerJson(url) {
     })
 }
 
-//merge exist api and folder id
-function handleIdMerge(jsonData) {
-    jsonData.collection.item.forEach(folder => {
-        folder.item.forEach(api => {
-            if (api._postman_id != null) {
-                api.id = api._postman_id
-            }
-        })
-        if (folder._postman_id != null) {
-            folder.id = folder._postman_id
-        }
-    })
-}
+
 
 async function update() {
     var swaggerJson = await getSwaggerJson(url)
+    //add postman collection used info
     swaggerJson['info'] = {
-        'title': collection_name,
-        'description': collection_name + ' api',
+        'title': collectionName,
+        'description': collectionName + ' api',
         'version': '1.0.0',
         '_postman_id': '807bb824-b333-4b59-a6ef-a8d46d3b95bf'
     }
-    var inputData = {
+    var converterInputData = {
         'type': 'json',
         'data': swaggerJson
     }
 
-    stp.convert(inputData, { 'folderStrategy': 'Tags' }, async (_a, res) => {
+    //use postman tool convert to postman collection
+    converter.convert(converterInputData, { 'folderStrategy': 'Tags' }, async (_a, res) => {
         if (res.result === false) {
             console.log('convert failed')
             console.log(res.reason)
             return
         }
-        var convert_json = res.output[0].data
+        var convertedJson = res.output[0].data
 
-        var id = await collection.getCollectionId(collection_name)
+        var id = await collection.getCollectionId(collectionName)
         if (id === null) {
             return
         }
-        var body = {
+        var collectionJson = {
             'collection': {
                 'info': {
-                    'name': collection_name,
-                    'description': collection_name + ' api',
+                    'name': collectionName,
+                    'description': collectionName + ' api',
                     '_postman_id': id,
                     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 
                 },
-                "item": convert_json.item
+                "item": convertedJson.item
             }
         }
-        var saved = await collection.getCollectionDetail(id)
-        var merged = json_merger.mergeObjects([body, saved])
-        handleIdMerge(merged)
-        collection.updateCollection(id, merged)
+    
+        var savedCollection = await collection.getCollectionDetail(id)   
+        var mergedCollection=merger.merge(savedCollection,collectionJson)    
+        collection.updateCollection(id, mergedCollection)
     })
 }
