@@ -13,15 +13,13 @@ This tools can update postman collection from swagger json, to avoid create ever
     Make sure you have install nodejs. Then in project root folder, run `npm install` to install libs.
 
 3. Get your postman api key  
-    In postman, click you account, select account settings. It will open the broswer, you can generate api key there.
+   Just open [this link](https://web.postman.co/settings/me/api-keys) in your broswer, and generate your api key.
 
 4. Set api key as environment.  
-    Example in Linux: `export POSTMAN_API_KEY=${you key}` 
-
-    you can also save it to you `~/.zhsrc` or `~/.bashrc` file
+    Copy `.env.sample` to `.env` file, then set the api key you get in the previous step.
     
 5. Rename `config/default-example.json` file to `config/default.json` and edit like bellow
-   ```
+   ```json
    {       
         "test":{
             "collection_name":"test import",
@@ -33,7 +31,7 @@ This tools can update postman collection from swagger json, to avoid create ever
 
 6. Run update  
     In project root folder, open command line and run `node index.js -s test`  
-    you can also install as gloabl cli. run `sudo npm link` in root folder, then use `apih -s xxx` everywhere!
+    you can also install as gloabl cli. run `sudo npm link` in root folder, then use `apih -s test` everywhere!
 
 ### TODO
 

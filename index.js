@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+require('dotenv').config();
 const converter = require('swagger2-to-postmanv2')
 const collection = require('./lib/collection')
 process.env.SUPPRESS_NO_CONFIG_WARNING = 'y';
