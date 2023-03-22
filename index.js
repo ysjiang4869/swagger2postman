@@ -31,6 +31,9 @@ function getSwaggerJson(url) {
         methods: 'get'
     }).then(response => {
         return response.data
+    }).catch(err => {
+        console.log('get swagger json failed: ' + err.message)
+        process.exit(-1);
     })
 }
 
