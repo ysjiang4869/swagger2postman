@@ -18,10 +18,8 @@
     "commander": "^6.2.0",
     "config": "^3.3.3",
     "dotenv": "^16.0.3",
-    "nodejieba": "^2.5.1",
     "openapi-to-postmanv2": "^4.10.2",
-    "pinyin": "^2.9.1",
-    "pinyinlite": "^1.2.1"
+    "pinyin": "^2.9.1"
   },
   "bin": {
     "apih": "./index.js"
