@@ -1,47 +1,42 @@
-# 从postman更新swagger collection
+# 从Swagger更新Postman收藏夹
 
+这个工具可以从Swagger JSON更新Postman收藏夹，以避免每次都要创建。
 
-该工具用于请求服务获得swagger json，并更新postman collection，取代默认import每次创建新的collection。
+>注意：该工具将旧配置与新配置合并，但是对于请求正文，它将保留已有的而不是合并。
 
-> 注意：本工具会在旧的collection基础上合并新的，但是对于requestbody，会保持旧的，不会更新
+### 使用
+1. 克隆该仓库
 
-### Use
-1. 克隆本项目
+2. 安装包
 
-2. 安装依赖
+    确保您已安装Node.js。然后，在项目根目录中运行“npm install”以安装库。
 
-    确认安装了nodejs。在项目根目录，执行`npm install`安装相关以来
+3. 获取您的Postman API密钥  
+   在您的浏览器中打开[此链接](https://web.postman.co/settings/me/api-keys)，并生成您的API密钥。
 
-3. 获得你的postman api key  
-    在postman中，点击你的账户，选择账户设置，会打开postman账户相关网页，在账户的设置中生成api-key。
-
-4. 设置 api key 作为环境变量  
-    例如: `export POSTMAN_API_KEY=${you key}` 
-
-    也可以编辑～/.bashrc 或者~/.zshrc设置环境变量。
-
-5. 重命名 `config/default-example.json` 文件为`config/default.json`，参考如下格式修改
-   ```
-   {
+4. 将API密钥设置为环境变量。  
+    将`.env.sample`复制到`.env`文件中，然后设置在上一步中获取的API密钥。
+    
+5. 将`config/default-example.json`文件重命名为`config/default.json`，并按如下所示进行编辑
+   ```json
+   {       
         "test":{
             "collection_name":"test import",
             "url":"http://127.0.0.1:8085/v2/api-docs"
         }
     }
    ```
-   json的key是命令行参数，用于区分不同的服务，可以给自己的服务取一个别名。 `collection_name`是postman集合的名称，请确保同名的集合只有一个。url是获取swagger的url，请求改url应该返回swagger2的json在response body中。
+    键是命令行值名称。`collection_name`是您要更新的Postman收藏夹名称。`url`是您的Swagger URL。
 
-6. 使用  
-
-    在项目根目录，打开命令行，执行`node index.js -s test`  即可更新对应collection_name的集合。
-
-    你也可以将本服务安装为全局命令，在根目录执行`sudo npm link` ，之后可以在任何地方执行`apih -s xxx`更新你的api～
+6. 运行更新  
+    在项目根目录中，打开命令行并运行`node index.js -s test`  
+    您还可以将其安装为全局CLI。在根文件夹中运行`sudo npm link`，然后在任何地方使用`apih -s test`！
 
 ### TODO
 
-- ~~Merge same name collection~~
+- ~~合并同名收藏夹~~
 
-### Reference
+### 参考资料
 
 1. [openapi-to-postman/OPTIONS.md at develop · postmanlabs/openapi-to-postman](https://github.com/postmanlabs/openapi-to-postman/blob/develop/OPTIONS.md)
 2. [Update Collection - Postman Public Workspace](https://www.postman.com/postman/workspace/postman-public-workspace/request/12959542-a42a1615-4b04-44e9-b2ea-e94729d5f4d6)
